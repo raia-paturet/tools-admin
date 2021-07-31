@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'admin_navbar.html' %}
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<main>
+    
+    <h1 class="m-3 mt-5">ETUDIANTS</h1>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+
+    <div class="row">
+
+      <div class="col">
+        <div class="card m-3">
+          <div class="card-header">
+            Créer un profil
+          </div>
+          <div class="card-body">
+            <form  method="post" novalidate>
+              <label for="email_form">Entrer un email:
+              </label>
+              <input type="email" id="email_form"
+                pattern=".+@globex.com" size="30" name="email_form" required>
+              <label for="user_promo_form">Selectionner une promo
+              </label>
+              <select class="custom-select" id="user_promo_form" name="user_promo_form" required>
+                <option selected>...</option>
+                {% for item in all_promos%}
+                <option value="{{ item.id }}">{{ item.formation.name }}{{ item.iteration }}</option>
+                {% endfor %}
+              </select>
+              <input type="submit">
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card m-3">
+          <div class="card-header">
+            Les etudiants
+          </div>
+          <div class="card-body">
+            <div class="dropdown"><p>NOTE : les etudiants qui n'ont pas encore rempli leur fiche info sont affichés par leur email.</p>
+              <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Par mail
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">{% for item in all_users %}
+                <li>
+                    <a class="dropdown-item" href="users/{{ item.id }}">
+                    {{ item.email }}
+                    </a>
+                </li>
+                {% endfor %}
+              </ul>
+
+              <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Par son nom
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                {% for item in all_users_detail %}
+                <li>
+                  <a class="dropdown-item" href="users/{{ item.user_id }}">
+                  {% if item.lastname %}
+                  {{ item.lastname }} {{ item.firstname }}
+                  {% endif %}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+
+              <form class="form-inline my-2 my-lg-0" method="get">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+
+
+{% endblock content %}
+

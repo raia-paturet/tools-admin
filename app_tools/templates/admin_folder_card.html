@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'admin_navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+ <main>
+    
+    <h1 class="m-3 mt-5">Dossier {{ name_folder.name }}</h1>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+
+    <div class="row">
+
+      <div class="col">
+
+          <div class="card m-3">
+            <div class="card-header">
+              LES DOCUMENTS DEMANDES POUR CE DOSSIER
+            </div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              {% for item in all_documents_folder %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading{{ item.name }}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ item.id }}" aria-expanded="false" aria-controls="flush-collapse{{ item.id }}">
+                    {{ item.document_type.name }}
+                  </button>
+                </h2>
+                <div id="flush-collapse{{ item.id }}" class="accordion-collapse collapse text-black-50" aria-labelledby="flush-heading{{ item.name }}" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body"><em>{{ item.document_type.description}}</em></div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+      </div>
+
+      <div class="col">
+        <div class="card m-3">
+          <div class="card-header">AJOUTER DES DOCUMENTS TYPES AU DOSSIER {{ name_folder.name }}
+          </div>
+          <div class="card-body">
+            <form  method="POST">
+              <div class="input-group mb-3">
+                {% for item in all_documents %}
+                <div class="form-check m-2">
+                  <input multiple class="form-check-input" type="checkbox" value="{{ item.id }}" id="flexCheckDefault" name="documents">
+                  <label class="form-check-label" for="documents">
+                    {{ item.name }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+              <div>
+                <input type="submit" >
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>
+          </div>
+        </main>
+{% endblock content %}
+

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'admin_navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+  <main>
+    
+      <h1 class="m-3 mt-5">DOSSIERS</h1>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+     
+      <div class="row">
+
+        <div class="col">
+
+          <div class="card m-3">
+            <div class="card-header">
+                CREER UN NOUVEAU DOSSIER
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                <label for="folder">Entrer le nom du dossier</label>
+                <input class="form-control" type="text" id="folder" name="folder">
+                <button type="submit" class="btn btn-secondary mt-2">Valider</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="list-group m-3">
+            <a  class="list-group-item list-group-item-secondary">
+              LES DOSSIERS EXISTANTS
+            </a>{% for item in all_folders %}
+            <a href="folders/{{ item.id }}" class="list-group-item list-group-item-action">
+            {{ item.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card m-3">
+            <div class="card-header">
+                CREER UN NOUVEAU DOCUMENT TYPE
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                <label for="document">Nom du nouveau document type</label>
+                <input class="form-control" type="text" id="document" name="document">
+                <label for="description">Description du document type</label>
+                <input class="form-control" type="text" id="description" name="description">
+                <button type="submit" class="btn btn-secondary mt-2">Valider</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card m-3">
+            <div class="card-header">
+              LES DOCUMENTS EXISTANTS
+            </div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              {% for item in all_documents %}
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading{{ item.name }}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ item.id }}" aria-expanded="false" aria-controls="flush-collapse{{ item.id }}">
+                    {{ item.name }}
+                  </button>
+                </h2>
+                <div id="flush-collapse{{ item.id }}" class="accordion-collapse collapse text-black-50" aria-labelledby="flush-heading{{ item.name }}" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body"><em>{{ item.description }}</em></div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+  </main>
+
+
+{% endblock content %}
+

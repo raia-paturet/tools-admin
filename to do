@@ -1,0 +1,17 @@
+
+installer un systeme de recup d'error:
+=> https://flask.palletsprojects.com/en/1.1.x/errorhandling/#error-logging-tools
+=> pip install sentry-sdk[flask]
+
+virer les lib non utilisees
+
+search
+
+dispacher sur plusieurs fichiers routes
+
+page index /
+
+delete
+
+rgpd
+

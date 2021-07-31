@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'admin_navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+  <main>
+    
+      <h1 class="m-3 mt-5">PROMO {{ promo.formation.name }}{{ promo.iteration }}</h1>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+     
+      <div class="row">
+
+        <div class="col">
+          <div class="list-group m-3">
+            <a  class="list-group-item list-group-item-secondary">
+              DOSSIERS ASSIGNES A LA PROMO
+            </a>
+            {% if all_folders_promo %}
+                {% for item in all_folders_promo %}
+            <a  class="list-group-item list-group-item-action">
+            {{ item.folder_type.name }}</a>
+            {% endfor %}
+            {% else %}
+             <p class="card-text m-2">vous n'avez pas encore de dossiers attribués à la promo.</p>
+            {% endif %}
+          </div>
+          
+          <div class="card m-3">
+            <div class="card-header">AJOUTER DES DOSSIERS TYPES A CETTE PROMO
+            </div>
+            <div class="card-body">
+              <form  method="POST">
+                {% for item in all_folders %} 
+                  <div class="form-check">  
+                    <input multiple class="form-check-input" type="checkbox" value="{{ item.id }}" id="flexCheckDefault" name="folders">
+                    <label class="form-check-label" for="folders">{{ item.name }}
+                    </label>
+                  </div>
+                {% endfor %}
+                <input type="submit" >
+              </form>
+            </div>
+          </div>
+          
+
+          </div>
+   
+
+    <div class="col">
+
+      <div class="list-group m-3">
+        <a  class="list-group-item list-group-item-secondary">
+          ETUDIANTS DE CETTE PROMO
+        </a>
+        {% if all_students %}
+        {% for item in all_students %}
+        <a href="/admin/users/{{ item.user_id }}" class="list-group-item list-group-item-action">
+        {{ item.users.email }}</a>
+        {% endfor %}
+        {% else %}
+         <p class="card-text m-2">vous n'avez pas encore d'etudiants attribués à cette promo </p>
+        {% endif %}
+      </div>
+
+        </div>
+      </div>
+    </div>
+    </div>
+          </div>
+        </main>
+
+{% endblock content %}
+

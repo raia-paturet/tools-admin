@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'admin_navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+<main>
+   
+      <h1 class="m-3 mt-5">FORMATIONS</h1>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+
+      <div class="row">
+
+    <div class="col">
+      <div class="card m-3">
+        <div class="card-header">
+            CREER UNE NOUVELLE FORMATION
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            <label for="formation_name">nom de la fomation</label>
+            <input class="form-control" type="text" id="formation_name" name="formation_name">
+            <button type="submit" class="btn btn-secondary mt-2">Valider</button>
+          </form>
+        </div>
+      </div>
+
+      <ul class="list-group m-3">
+        <li class="list-group-item list-group-item-secondary">LES FORMATIONS EXISTANTES</li>
+        {% for item in all_formations %}
+        <li class="list-group-item list-group-item-light">{{ item.name }}</li>
+        {% endfor %}
+      </ul>
+
+    </div>
+
+    <div class="col">
+      
+      <div class="card m-3">
+        <div class="card-header">
+            CREER UNE NOUVELLE PROMOTION
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            <div class="row">
+              <div class="form-group row m-3">
+                <label for="formation" class="col col-form-label">Choisir une formation</label>
+                <div class="col">
+                  <select class="custom-select" id="formation" name="formation" required="required">
+                    <option selected>_</option>
+                    {% for item in all_formations%}
+                    <option value="{{ item.id }}" >{{ item.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row m-3">
+                <label for="iteration" class="col col-form-label">Choisir une itération</label>
+                <div class="col">
+                  <input type="number" class="custom-select" id="iteration" name="iteration" placeholder="_" min="1" max="20" required="required">
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-secondary">Submit</button>
+          </form>
+        </div>
+      </div>
+      
+
+      <div class="list-group m-3">
+        <a  class="list-group-item list-group-item-secondary">
+
+          LES PROMOS EXISTANTES
+        </a>{% for item in all_promos %}
+        <a class="list-group-item list-group-item-action" href="/admin/promo/{{ item.id }}">
+        {{ item.formation.name }}  {{ item.iteration }}</a>
+        {% endfor %}
+      </div>
+
+    
+
+    </div>
+
+
+  </div>
+</div>
+
+{% if result %}
+{{ result }}
+{% endif %}
+</div>
+          </div>
+        </main>
+
+{% endblock content %}
+

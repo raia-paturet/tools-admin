@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block user_dashboard %}
+   
+
+  <main>
+    
+      <h1 class="m-3 mt-5">DOSSIER DE
+          {% if user_detail_object.firstname == None %}
+            {{ user_detail_object.users.email }}
+          {% else %}
+            {{ user_detail_object.lastname }} {{ user_detail_object.firstname }}
+          {% endif %}</h1>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert-{{category}}">
+      {{ message }}
+    </div>
+     {% endfor %}
+     
+      <div class="row">
+
+
+    <div class="col-4">
+      <div class="card m-3">
+        <div class="card-header">PROFIL 
+        </div>
+        <div class="card-body">
+          <div class="row m-2">
+            <div class="col">
+              {% if user_detail_object.firstname == None %}
+            <p class="card-text">{{ user_detail_object.users.email }} n'a pas encore enregistré.e son profil</p>
+          {% else %}
+             <p class="card-text">prenom :</p>
+             <p class="card-text">nom :</p>
+             <p class="card-text">adresse : </p>
+             <p class="card-text">code postal :</p>
+             <p class="card-text">ville :</p>
+             <p class="card-text">telephone:</p>
+             <p class="card-text">mail :</p>
+            </div>
+            <div class="col">
+             <p class="card-text">{{ user_detail_object.firstname }}</p>
+             <p class="card-text">{{ user_detail_object.lastname }}</p>
+             <p class="card-text">{{ user_detail_object.address }}</p>
+             <p class="card-text">{{ user_detail_object.city_code }}</p>
+             <p class="card-text">{{ user_detail_object.city }}</p>
+             <p class="card-text">{{ user_detail_object.phone }}</p>
+             <p class="card-text">{{ user_detail_object.users.email}}</p>
+             {% endif %}
+            </div>
+            <div>
+                <a href="{{ url_for('user_update_profile') }}" class="btn btn-light mt-5">Modifier le profil</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ <div class="card m-3">
+        <div class="card-header">
+          FORMATION SUIVIE
+          {{ user_detail_object.lastname }}
+        </div>
+        <div class="card-body">
+          <a >{{ promo_user.promo.formation.name }} {{ promo_user.promo.iteration }}</a>
+        </div>
+      </div>
+      <div class="card m-3">
+        <div class="card-header">ETAPE DANS LA FORMATION 
+        </div>
+        <div class="card-body">
+          <p class="card-text">Step Formation : {{ promo_user.user_step.value }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col">
+
+      <div class="card m-3">
+        <div class="card-header">
+          <h5 class="card-title">Dossiers & Documents </h5>
+        </div>
+        <div class="card-body"> 
+
+      {% for item in all_promo_folders %}
+   
+          <div class="card m-2">
+            <div class="card-header">
+              <h5 class="card-title">{{ item.folder_type.name }}</h5>
+              <div class="card-body">
+                  {% for elem in all_documents_folder %}
+                  {% if item.folder_type_id ==  elem.folder_type_id %}
+                <div class="card p-3" >  {% if elem.document_type_id not in test %}  <h5 class="card-title">{{ elem.document_type.name }}</h5>
+                  <h6 class="card-subtitle mb-2 text-danger">Pas encore envoyé</h6>
+                  <div class="custom-file">
+                    <form method="POST" action="" enctype="multipart/form-data">
+                      <p><input type="file" name="file"></p>
+                      <p><input type="hidden" value="{{ elem.document_type.id }}" id="document" name="document">
+                      </p>
+                      <p><input type="submit" value="Submit"></p>
+                    </form>
+
+                    </div>
+                {% else %}
+                  <h5 class="card-title">{{ elem.document_type.name }}</h5>
+                  {% for docs in all_docs_user %}   
+                  {% if docs.document_type_id == elem.document_type_id %}
+                  {% if docs.status.value == 'validé' or docs.status.value == 'non concerné' %}
+                  <h6 class="card-subtitle mb-2 text-success"> {{ docs.status.value }}</h6>
+                  {% else %}
+                  <h6 class="card-subtitle mb-2 text-warning"> {{ docs.status.value }}</h6>
+                  {% endif %}
+                  <div class="custom-file">
+                    <form method="POST" action="" enctype="multipart/form-data">
+                      <p><input type="file" name="file"></p>
+                      <p><input type="hidden" value="{{ elem.document_type.id }}" id="document" name="document">
+                      </p>
+                      <p><input type="submit" value="Submit"></p>
+                    </form>
+                    </div>
+
+             
+                  <p class="card-text mb-2"> {{ docs.file }}</p>
+                  <a href="{{ url_for('uploading', filepath=docs.file) }}" class="card-link ">Telecharger</a>
+
+                     {% endif %}
+                    {% endfor %} {% endif %}
+                </div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+         
+            </div>
+     
+          </div>
+      
+            {% endfor %}
+           </div>
+
+        </div>
+    </div>
+  </div>
+</main>
+{% endblock user_dashboard %}
+
+
+
+
+

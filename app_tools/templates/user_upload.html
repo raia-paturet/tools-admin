@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block user_dashboard %}
+
+
+<div class="container-fluid m-5">
+    <h1>Dashboard</h1>
+    <div class="row ">
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                Formation
+                </div>
+                <div class="card-body">
+                    <p class="card-text m-2">{{ promo_user.promo.formation.name }}{{ promo_user.promo.iteration }}</p>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">
+                informations
+                </div>
+                <div class="card-body">
+                    <ul class="list-inline">
+                      <li class="list-inline-item">Prenom :</li>
+                      <li class="list-inline-item">{{ user_detail.firstname }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">Nom :</li>
+                      <li class="list-inline-item">{{ user_detail.lastname }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">Adresse : </li>
+                      <li class="list-inline-item">{{ user_detail.address }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">code postal :</li>
+                      <li class="list-inline-item">{{ user_detail.city_code }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">Ville :</li>
+                      <li class="list-inline-item">{{ user_detail.city }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">Telephone:</li>
+                      <li class="list-inline-item">{{ user_detail.phone }}</li>
+                    </ul>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">mail :</li>
+                      <li class="list-inline-item">{{ user_detail.users.email}}</li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                <a href="{{ url_for('user_update_profile') }}" class="btn btn-secondary">Modifier le profil</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                dossiers 
+                </div>
+                <div>
+                    {% if all_promo_folders %}
+                        {% for item in all_promo_folders %}
+                        <a class="btn tn-outline-success" href="/user/folder/{{ item.folder_type_id }}"  role="button">{{ item.folder_type.name}}</a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="card-text m-2">vous n'avez pas encore de dossiers attribués</p>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="card mt-4">
+              <div class="card-header">
+                <h5 class="card-title">Documents a fournir pour le dossier {{ all_documents_folder.name }}</h5>
+              </div>
+              <div class="card-body">
+                
+                <ul>{% for item in all_documents_folder %}
+                <li><p class="card-text">{{ item.document_type.name }} // {{ item.document_type.description }}</p></li>
+                {% endfor %}</ul>
+    
+                    {% for item in all_documents_folder %}
+            
+                        <div class="card m-2">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ item.document_type.name }}</h5>
+                            
+                            {% set ns = namespace(found=false) %}
+
+                            {% for elem in all_docs_user %}
+                            {% if item.document_type_id == elem.document_type_id %}
+
+                                {{ elem.status.value }}
+                                {% set ns.found = true %}
+
+                            {% endif %}   
+                        
+                            {% endfor %}
+
+                            {% if ns.found %} y a rien {% endif %}
+                            <div class="custom-file">
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                  <p><input type="file" name="file"></p>
+                                  <p><input type="hidden" value="{{ item.document_type.id }}" id="document" name="document">
+                                  </p>
+                                  <p><input type="submit" value="Submit"></p>
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  </div>
+</div>
+{% endblock user_dashboard %}
+
+
+
+

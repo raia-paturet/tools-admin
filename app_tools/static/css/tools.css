@@ -1,0 +1,16 @@
+.sidebar {
+    position: fixed;
+    top: 00;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 90px 0 0;
+    box-shadow: inset -1px 0 0 rgb(0 0 0 / 10%);
+}
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    padding-top: var(--bs-gutter-x,2.75rem);
+}
+.accordion-body {
+	color: grey!important;
+	font-size: 0.8rem;
+}

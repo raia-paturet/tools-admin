@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Tools admin</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/tools.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-light fixed-top bg-light flex-md-nowrap p-0 shadow"> 
+      <img src="{{ url_for('static', filename='images/logo-matrice-initiale-noir.png') }}" alt="" width="180" height="70" class="d-block">
+      <ul class="navbar-nav px-3">
+        {% if current_user.is_anonymous %}
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        </li>
+        {% else %}
+              <li class="nav-item text-nowrap">
+          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+        </li>
+       {% endif %}
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+         {% block user_dashboard %}
+          {% endblock %}
+      <div class="row">
+        <div class="col-2">
+          {% block sidebar %}
+          {% endblock %}
+        </div>
+        <div class="col">
+          {% block content %}
+          {% endblock %}
+        </div>
+            
+      </div>
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">&copy; Copyright 2020 by <a href="https://matrice.io/">MATRICE</span>
+      </div>
+    </footer>
+
+
+    </div>
+  </body>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+   
+  </body>
+
+
+
+
+
+
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+
+</html>
